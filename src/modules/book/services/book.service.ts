@@ -8,12 +8,12 @@ import { Model } from 'mongoose';
 export class BookService {
   constructor(
     @Inject('BOOK_MODEL')
-    private BookModel: Model<Book>,
+    private bookModel: Model<Book>,
   ) {}
 
   //create Book
   async createBook(createBook: CreateBookDto): Promise<Book> {
-    const createdBook = await new this.BookModel(createBook);
+    const createdBook = await new this.bookModel(createBook);
     return createdBook.save();
   }
 
@@ -27,7 +27,7 @@ export class BookService {
       return new NotFoundException('Book not found');
     }
 
-    const updatedBook = await this.BookModel.updateOne(
+    const updatedBook = await this.bookModel.updateOne(
       {
         _id: _id,
       },
@@ -50,9 +50,11 @@ export class BookService {
     if (!findBookExist || findBookExist.length <= 0) {
       return new NotFoundException('Book not found');
     }
-    const BookDeleted = await this.BookModel.deleteOne({
-      _id: id,
-    }).exec();
+    const BookDeleted = await this.bookModel
+      .deleteOne({
+        _id: id,
+      })
+      .exec();
 
     return BookDeleted;
   }
@@ -60,15 +62,17 @@ export class BookService {
   //all Books
   async getAllBooks(): Promise<Book[] | []> {
     //execute the query and return a promise
-    return this.BookModel.find().exec();
+    return this.bookModel.find().exec();
   }
 
   //get Book by id
   async getBookById(id: string): Promise<Book[] | []> {
     //execute the query and return a promise
-    const BookDetails: Book[] = await this.BookModel.find({
-      _id: id,
-    }).exec();
+    const BookDetails: Book[] = await this.bookModel
+      .find({
+        _id: id,
+      })
+      .exec();
 
     return BookDetails ? BookDetails : [];
   }
