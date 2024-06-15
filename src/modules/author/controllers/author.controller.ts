@@ -1,27 +1,52 @@
-import { Controller, Delete, Get, Post, Put, Req } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Put,
+} from '@nestjs/common';
+import { CreateAuthorDto } from '../dtos/create-author-request.dto';
+import { AuthorService } from '../services/author.service';
+import { Author } from '../interfaces/author.interface';
+import { UpdateAuthorDto } from '../dtos/update-author-request.dto';
+import { DeleteAuthorDto } from '../dtos/delete-author-request.dto';
+import { authorDetailsDto } from '../dtos/author-details-request.dto';
 
 @Controller('author')
 export class AuthorController {
+  constructor(private readonly authorService: AuthorService) {}
+
   //create author
   @Post('create')
-  createAuthor() {}
+  createAuthor(@Body() createAuthor: CreateAuthorDto): Promise<Author> {
+    return this.authorService.createAuthor(createAuthor);
+  }
 
   //update author
   @Put('update')
-  updateAuthor() {}
+  async updateAuthor(@Body() updateAuthor: UpdateAuthorDto): Promise<any> {
+    return await this.authorService.updateAuthor(updateAuthor);
+  }
 
   //delete author
-  @Delete('delete')
-  deleteAuthor() {}
+  @Delete('delete/:id')
+  async deleteAuthor(@Param() params: DeleteAuthorDto) {
+    const { id } = params;
+    return await this.authorService.deleteAuthor(id);
+  }
 
   //all authors
   @Get()
-  getAllAuthors(@Req() request: Request): string {
-    console.log(request);
-    return 'This action returns all cats';
+  async getAllAuthors(): Promise<Author[]> {
+    return await this.authorService.getAllAuthors();
   }
 
   //get author by id
-  @Get('detail')
-  getAuthorById() {}
+  @Get('detail/:id')
+  async getAuthorById(@Param() params: authorDetailsDto) {
+    const { id } = params;
+    return await this.authorService.getAuthorById(id);
+  }
 }
