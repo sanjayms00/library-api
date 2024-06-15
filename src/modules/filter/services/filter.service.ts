@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { Model, Types } from 'mongoose';
 import { Book } from 'src/modules/book/interfaces/book.interface';
-import { searchCriteria } from '../interfaces/search.interface';
+import { publishedDate, searchCriteria } from '../interfaces/search.interface';
 
 @Injectable()
 export class FilterService {
@@ -17,13 +17,13 @@ export class FilterService {
   async searchBook(
     word: string,
     authorId: string,
-    publishedDate: string,
+    publishedDate: publishedDate,
   ): Promise<Book[]>;
 
   async searchBook(
     word?: string,
     authorId?: string,
-    publishedDate?: string,
+    publishedDate?: publishedDate,
   ): Promise<Book[]> {
     const searchCriteria: searchCriteria = {};
 
@@ -34,14 +34,17 @@ export class FilterService {
         $options: 'i',
       };
     }
+
     if (authorId) {
       searchCriteria.authorId = new Types.ObjectId(authorId);
     }
-    if (publishedDate) {
-      searchCriteria.publishedDate = new Date(publishedDate);
-    }
 
-    console.log(searchCriteria);
+    if (publishedDate && publishedDate.start && publishedDate.end) {
+      searchCriteria.publishedDate = {
+        $gte: new Date(publishedDate.start),
+        $lte: new Date(publishedDate.end),
+      };
+    }
 
     // Case insensitive search using 'i'
     const searchedBooks = await this.bookModel.aggregate([

@@ -12,5 +12,9 @@ export class FilerSearchDto {
 
   @IsString()
   @IsOptional()
-  publishedDate?: string;
+  startDate?: string;
+
+  @IsString()
+  @IsOptional()
+  endDate?: string;
 }

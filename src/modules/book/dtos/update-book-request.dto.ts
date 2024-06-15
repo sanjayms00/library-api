@@ -1,5 +1,11 @@
 import { Type } from 'class-transformer';
-import { IsDate, IsNotEmpty, IsString, Length } from 'class-validator';
+import {
+  IsDate,
+  IsNotEmpty,
+  IsOptional,
+  IsString,
+  Length,
+} from 'class-validator';
 
 export class UpdateBookDto {
   @IsString()
@@ -20,6 +26,7 @@ export class UpdateBookDto {
   authorId: string;
 
   @IsDate()
+  @IsOptional()
   @Type(() => Date)
   publishedDate: Date;
 }
