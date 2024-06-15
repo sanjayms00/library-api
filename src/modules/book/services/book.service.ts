@@ -60,9 +60,13 @@ export class BookService {
   }
 
   //all Books
-  async getAllBooks(): Promise<Book[] | []> {
+  async getAllBooks(pgNo = 0): Promise<Book[] | []> {
     //execute the query and return a promise
-    return this.bookModel.find().exec();
+    const limit = 3;
+    const pages = limit * pgNo;
+
+    //execute the query and return a promise
+    return this.bookModel.find().skip(pages).limit(limit).exec();
   }
 
   //get Book by id

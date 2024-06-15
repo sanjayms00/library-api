@@ -6,6 +6,7 @@ import {
   Param,
   Post,
   Put,
+  Query,
 } from '@nestjs/common';
 import { Book } from '../interfaces/book.interface';
 import { CreateBookDto } from '../dtos/create-book-request.dto';
@@ -14,6 +15,7 @@ import { DeleteBookDto } from '../dtos/delete-book-request.dto';
 import { UpdateBookDto } from '../dtos/update-book-request.dto';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { BookService } from '../services/book.service';
+import { paginatorDto } from 'src/common/dtos/pagination.dto';
 
 @Controller('book')
 export class BookController {
@@ -40,8 +42,10 @@ export class BookController {
 
   //all Books
   @Get()
-  async getAllBooks(): Promise<Book[]> {
-    return await this.BookService.getAllBooks();
+  async getAllBooks(@Query() query: paginatorDto): Promise<Book[]> {
+    const pgNo = Object.keys(query).length <= 0 ? 0 : Number(query.pgNo);
+
+    return await this.BookService.getAllBooks(pgNo);
   }
 
   //get Book by id

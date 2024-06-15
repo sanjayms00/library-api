@@ -60,9 +60,12 @@ export class AuthorService {
   }
 
   //all authors
-  async getAllAuthors(): Promise<Author[] | []> {
+  async getAllAuthors(pgNo = 0): Promise<Author[] | []> {
+    const limit = 3;
+    const pages = limit * pgNo;
+
     //execute the query and return a promise
-    return this.authorModel.find().exec();
+    return this.authorModel.find().skip(pages).limit(limit).exec();
   }
 
   //get author by id

@@ -6,6 +6,7 @@ import {
   Param,
   Post,
   Put,
+  Query,
 } from '@nestjs/common';
 import { CreateAuthorDto } from '../dtos/create-author-request.dto';
 import { AuthorService } from '../services/author.service';
@@ -13,6 +14,7 @@ import { Author } from '../interfaces/author.interface';
 import { UpdateAuthorDto } from '../dtos/update-author-request.dto';
 import { DeleteAuthorDto } from '../dtos/delete-author-request.dto';
 import { authorDetailsDto } from '../dtos/author-details-request.dto';
+import { paginatorDto } from 'src/common/dtos/pagination.dto';
 
 @Controller('author')
 export class AuthorController {
@@ -39,8 +41,10 @@ export class AuthorController {
 
   //all authors
   @Get()
-  async getAllAuthors(): Promise<Author[]> {
-    return await this.authorService.getAllAuthors();
+  async getAllAuthors(@Query() query: paginatorDto): Promise<Author[]> {
+    const pgNo = Object.keys(query).length <= 0 ? 0 : Number(query.pgNo);
+
+    return await this.authorService.getAllAuthors(pgNo);
   }
 
   //get author by id
