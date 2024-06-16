@@ -1,6 +1,6 @@
 import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { Model } from 'mongoose';
-import { Author } from '../interfaces/author.interface';
+import { Author, Authorlist } from '../interfaces/author.interface';
 import { CreateAuthorDto } from '../dtos/create-author-request.dto';
 import { UpdateAuthorDto } from '../dtos/update-author-request.dto';
 
@@ -78,5 +78,9 @@ export class AuthorService {
       .exec();
 
     return authorDetails ? authorDetails : [];
+  }
+
+  getAllAuthorList(): Promise<Authorlist[]> {
+    return this.authorModel.find({}, { _id: 1, name: 1 });
   }
 }

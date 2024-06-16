@@ -10,7 +10,7 @@ import {
 } from '@nestjs/common';
 import { CreateAuthorDto } from '../dtos/create-author-request.dto';
 import { AuthorService } from '../services/author.service';
-import { Author } from '../interfaces/author.interface';
+import { Author, Authorlist } from '../interfaces/author.interface';
 import { UpdateAuthorDto } from '../dtos/update-author-request.dto';
 import { DeleteAuthorDto } from '../dtos/delete-author-request.dto';
 import { authorDetailsDto } from '../dtos/author-details-request.dto';
@@ -52,5 +52,11 @@ export class AuthorController {
   async getAuthorById(@Param() params: authorDetailsDto) {
     const { id } = params;
     return await this.authorService.getAuthorById(id);
+  }
+
+  //all authors list for filtering name and _id only
+  @Get('list')
+  async getAllAuthorList(): Promise<Authorlist[]> {
+    return await this.authorService.getAllAuthorList();
   }
 }
