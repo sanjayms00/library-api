@@ -1,9 +1,15 @@
-import { Document } from 'mongoose';
+export interface Book {
+  _id: string;
+  title: string;
+  description: string;
+  authorId: string;
+  publishedDate: Date;
+  authorData?: AuthorData;
+}
 
-export interface Book extends Document {
-  readonly _id: string;
-  readonly title: string;
-  readonly description: number;
-  readonly authorId: string;
-  readonly publishedDate: Date;
+export interface AuthorData {
+  _id: string;
+  name: string;
+  biography: string;
+  birthdate: Date;
 }

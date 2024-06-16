@@ -52,6 +52,9 @@ export class BookController {
   @Get('detail/:id')
   async getBookById(@Param() params: BookDetailsDto) {
     const { id } = params;
-    return await this.BookService.getBookById(id);
+
+    const [bookData] = await this.BookService.getBookDetails(id);
+
+    return bookData ? bookData : {};
   }
 }

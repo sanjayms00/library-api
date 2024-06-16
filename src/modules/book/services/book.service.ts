@@ -2,7 +2,7 @@ import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { Book } from '../interfaces/book.interface';
 import { UpdateBookDto } from '../dtos/update-book-request.dto';
 import { CreateBookDto } from '../dtos/create-book-request.dto';
-import { Model } from 'mongoose';
+import { Model, Types } from 'mongoose';
 
 @Injectable()
 export class BookService {
@@ -62,7 +62,7 @@ export class BookService {
   //all Books
   async getAllBooks(pgNo = 0): Promise<Book[] | []> {
     //execute the query and return a promise
-    const limit = 3;
+    const limit = 10;
     const pages = limit * pgNo;
 
     //execute the query and return a promise
@@ -72,12 +72,45 @@ export class BookService {
   //get Book by id
   async getBookById(id: string): Promise<Book[] | []> {
     //execute the query and return a promise
-    const BookDetails: Book[] = await this.bookModel
+    const bookDetails: Book[] = await this.bookModel
       .find({
         _id: id,
       })
       .exec();
 
-    return BookDetails ? BookDetails : [];
+    return bookDetails ? bookDetails : [];
+  }
+
+  async getBookDetails(id: string): Promise<Book[]> {
+    let bookData: Book[] = await this.getBookById(id);
+
+    if (!bookData || bookData.length <= 0) {
+      throw new NotFoundException('Book not found');
+    }
+
+    bookData = await this.bookModel.aggregate([
+      {
+        $match: { _id: new Types.ObjectId(id) },
+      },
+      {
+        $lookup: {
+          from: 'authors',
+          localField: 'authorId',
+          foreignField: '_id',
+          as: 'authorData',
+        },
+      },
+      {
+        $unwind: '$authorData',
+      },
+      {
+        $project: {
+          __v: 0,
+          'authorData.__v': 0,
+        },
+      },
+    ]);
+
+    return bookData;
   }
 }
