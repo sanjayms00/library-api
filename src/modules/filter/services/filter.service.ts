@@ -12,19 +12,30 @@ export class FilterService {
 
   //filtering
   //function overloading for having diffent parameters
-  async searchBook(word: string): Promise<Book[]>;
-  async searchBook(word: string, authorId: string): Promise<Book[]>;
+  async searchBook(word: string): Promise<{ allBooks: Book[]; total: number }>;
+  async searchBook(
+    word: string,
+    authorId: string,
+  ): Promise<{ allBooks: Book[]; total: number }>;
   async searchBook(
     word: string,
     authorId: string,
     publishedDate: publishedDate,
-  ): Promise<Book[]>;
+  ): Promise<{ allBooks: Book[]; total: number }>;
+  async searchBook(
+    word: string,
+    authorId: string,
+    publishedDate: publishedDate,
+    pgNo: number,
+  ): Promise<{ allBooks: Book[]; total: number }>;
 
   async searchBook(
     word?: string,
     authorId?: string,
     publishedDate?: publishedDate,
-  ): Promise<Book[]> {
+    pgNo = 0,
+  ): Promise<{ allBooks: Book[]; total: number }> {
+    const count = 12;
     const searchCriteria: searchCriteria = {};
 
     //search criterias
@@ -46,8 +57,13 @@ export class FilterService {
       };
     }
 
+    const total = await this.bookModel
+      .find(searchCriteria)
+      .countDocuments()
+      .exec();
+
     // Case insensitive search using 'i'
-    const searchedBooks = await this.bookModel.aggregate([
+    const allBooks = await this.bookModel.aggregate([
       {
         $match: searchCriteria,
       },
@@ -68,8 +84,14 @@ export class FilterService {
           'authorData.__v': 0,
         },
       },
+      {
+        $skip: pgNo * count,
+      },
+      {
+        $limit: count,
+      },
     ]);
 
-    return searchedBooks;
+    return { allBooks, total };
   }
 }

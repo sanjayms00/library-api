@@ -60,13 +60,41 @@ export class BookService {
   }
 
   //all Books
-  async getAllBooks(pgNo = 0): Promise<Book[] | []> {
-    //execute the query and return a promise
-    const limit = 10;
+  async getAllBooks(pgNo = 0): Promise<{ allBooks: Book[]; total: number }> {
+    const limit = 12;
     const pages = limit * pgNo;
+    const total = await this.bookModel.countDocuments().exec();
 
-    //execute the query and return a promise
-    return this.bookModel.find().skip(pages).limit(limit).exec();
+    const allBooks = await this.bookModel.aggregate([
+      {
+        $match: {},
+      },
+      {
+        $lookup: {
+          from: 'authors',
+          localField: 'authorId',
+          foreignField: '_id',
+          as: 'authorData',
+        },
+      },
+      {
+        $unwind: '$authorData',
+      },
+      {
+        $project: {
+          __v: 0,
+          'authorData.__v': 0,
+        },
+      },
+      {
+        $skip: pages,
+      },
+      {
+        $limit: limit,
+      },
+    ]);
+
+    return { allBooks, total };
   }
 
   //get Book by id

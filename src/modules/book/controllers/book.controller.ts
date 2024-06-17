@@ -42,7 +42,9 @@ export class BookController {
 
   //all Books
   @Get()
-  async getAllBooks(@Query() query: paginatorDto): Promise<Book[]> {
+  async getAllBooks(
+    @Query() query: paginatorDto,
+  ): Promise<{ allBooks: Book[]; total: number }> {
     const pgNo = Object.keys(query).length <= 0 ? 0 : Number(query.pgNo);
 
     return await this.BookService.getAllBooks(pgNo);

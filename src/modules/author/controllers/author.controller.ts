@@ -41,7 +41,9 @@ export class AuthorController {
 
   //all authors
   @Get()
-  async getAllAuthors(@Query() query: paginatorDto): Promise<Author[]> {
+  async getAllAuthors(
+    @Query() query: paginatorDto,
+  ): Promise<{ author: Author[]; total: number }> {
     const pgNo = Object.keys(query).length <= 0 ? 0 : Number(query.pgNo);
 
     return await this.authorService.getAllAuthors(pgNo);

@@ -1,14 +1,22 @@
-import { Inject, Injectable, NotFoundException } from '@nestjs/common';
+import {
+  ForbiddenException,
+  Inject,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { Model } from 'mongoose';
 import { Author, Authorlist } from '../interfaces/author.interface';
 import { CreateAuthorDto } from '../dtos/create-author-request.dto';
 import { UpdateAuthorDto } from '../dtos/update-author-request.dto';
+import { Book } from 'src/modules/book/interfaces/book.interface';
 
 @Injectable()
 export class AuthorService {
   constructor(
     @Inject('AUTHOR_MODEL')
     private authorModel: Model<Author>,
+    @Inject('BOOK_MODEL')
+    private bookModel: Model<Book>,
   ) {}
 
   //create author
@@ -48,8 +56,19 @@ export class AuthorService {
     const findAuthorExist = await this.getAuthorById(id);
 
     if (!findAuthorExist || findAuthorExist.length <= 0) {
-      return new NotFoundException('Author not found');
+      throw new NotFoundException('Author not found');
     }
+
+    const findAuthorBookExist = await this.bookModel.find({
+      authorId: id,
+    });
+
+    if (findAuthorBookExist || findAuthorBookExist.length > 0) {
+      throw new ForbiddenException(
+        'The author contains books, this action is forbidden',
+      );
+    }
+
     const authorDeleted = await this.authorModel
       .deleteOne({
         _id: id,
@@ -60,12 +79,20 @@ export class AuthorService {
   }
 
   //all authors
-  async getAllAuthors(pgNo = 0): Promise<Author[] | []> {
-    const limit = 3;
+  async getAllAuthors(pgNo = 0): Promise<{ author: Author[]; total: number }> {
+    const limit = 12;
     const pages = limit * pgNo;
 
+    const total = await this.authorModel.countDocuments();
+
     //execute the query and return a promise
-    return this.authorModel.find().skip(pages).limit(limit).exec();
+    const allAuhtors = await this.authorModel
+      .find()
+      .skip(pages)
+      .limit(limit)
+      .exec();
+
+    return { author: allAuhtors, total };
   }
 
   //get author by id
@@ -77,7 +104,7 @@ export class AuthorService {
       })
       .exec();
 
-    return authorDetails ? authorDetails : [];
+    return authorDetails;
   }
 
   getAllAuthorList(): Promise<Authorlist[]> {
