@@ -12,12 +12,19 @@ const author_module_1 = require("./modules/author/author.module");
 const book_module_1 = require("./modules/book/book.module");
 const database_module_1 = require("./database/database.module");
 const filter_module_1 = require("./modules/filter/filter.module");
+const config_1 = require("@nestjs/config");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
 exports.AppModule = AppModule = __decorate([
     (0, common_1.Module)({
-        imports: [author_module_1.AuthorModule, book_module_1.BookModule, database_module_1.DatabaseModule, filter_module_1.FilterModule],
+        imports: [
+            author_module_1.AuthorModule,
+            book_module_1.BookModule,
+            database_module_1.DatabaseModule,
+            filter_module_1.FilterModule,
+            config_1.ConfigModule.forRoot({ isGlobal: true }),
+        ],
     })
 ], AppModule);
 //# sourceMappingURL=app.module.js.map

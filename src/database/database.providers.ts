@@ -4,6 +4,7 @@ export const databaseProviders = [
   {
     provide: 'DATABASE_CONNECTION',
     useFactory: (): Promise<typeof mongoose> =>
-      mongoose.connect('mongodb://localhost:27017/library'),
+      // mongoose.connect('mongodb://localhost:27017/library'),
+      mongoose.connect(process.env.DATABASE_URI),
   },
 ];

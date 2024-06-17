@@ -5,7 +5,7 @@ const mongoose = require("mongoose");
 exports.databaseProviders = [
     {
         provide: 'DATABASE_CONNECTION',
-        useFactory: () => mongoose.connect('mongodb://localhost:27017/library'),
+        useFactory: () => mongoose.connect(process.env.DATABASE_URI),
     },
 ];
 //# sourceMappingURL=database.providers.js.map
