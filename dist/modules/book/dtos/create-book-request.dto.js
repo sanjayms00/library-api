@@ -12,7 +12,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.CreateBookDto = void 0;
 const class_transformer_1 = require("class-transformer");
 const class_validator_1 = require("class-validator");
-const mongoose_1 = require("mongoose");
 class CreateBookDto {
 }
 exports.CreateBookDto = CreateBookDto;
@@ -28,7 +27,7 @@ __decorate([
 __decorate([
     (0, class_validator_1.IsString)(),
     (0, class_validator_1.Length)(24, 24, { message: 'Id must be exactly 24 characters long' }),
-    __metadata("design:type", mongoose_1.Schema.Types.ObjectId)
+    __metadata("design:type", String)
 ], CreateBookDto.prototype, "authorId", void 0);
 __decorate([
     (0, class_validator_1.IsNotEmpty)(),

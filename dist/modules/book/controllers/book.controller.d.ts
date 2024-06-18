@@ -10,7 +10,7 @@ export declare class BookController {
     constructor(BookService: BookService);
     createBook(createBook: CreateBookDto): Promise<Book>;
     updateBook(updateBook: UpdateBookDto): Promise<any>;
-    deleteBook(params: DeleteBookDto): Promise<import("@nestjs/common").NotFoundException | import("mongodb").DeleteResult>;
+    deleteBook(params: DeleteBookDto): Promise<import("mongodb").DeleteResult | import("@nestjs/common").NotFoundException>;
     getAllBooks(query: paginatorDto): Promise<{
         allBooks: Book[];
         total: number;

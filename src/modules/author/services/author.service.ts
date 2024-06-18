@@ -63,7 +63,7 @@ export class AuthorService {
       authorId: id,
     });
 
-    if (findAuthorBookExist || findAuthorBookExist.length > 0) {
+    if (findAuthorBookExist && findAuthorBookExist.length > 0) {
       throw new ForbiddenException(
         'The author contains books, this action is forbidden',
       );

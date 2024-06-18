@@ -33,7 +33,7 @@ export declare class BookService {
     constructor(bookModel: Model<Book>);
     createBook(createBook: CreateBookDto): Promise<Book>;
     updateBook(updateBook: UpdateBookDto): Promise<any>;
-    deleteBook(id: string): Promise<NotFoundException | import("mongodb").DeleteResult>;
+    deleteBook(id: string): Promise<import("mongodb").DeleteResult | NotFoundException>;
     getAllBooks(pgNo?: number): Promise<{
         allBooks: Book[];
         total: number;

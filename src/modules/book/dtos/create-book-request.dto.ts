@@ -1,6 +1,5 @@
 import { Type } from 'class-transformer';
 import { IsDate, IsNotEmpty, IsString, Length } from 'class-validator';
-import { Schema } from 'mongoose';
 
 export class CreateBookDto {
   @IsString()
@@ -12,7 +11,7 @@ export class CreateBookDto {
 
   @IsString()
   @Length(24, 24, { message: 'Id must be exactly 24 characters long' })
-  authorId: Schema.Types.ObjectId;
+  authorId: string;
 
   @IsNotEmpty()
   @IsDate()

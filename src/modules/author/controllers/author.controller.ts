@@ -39,10 +39,26 @@ export class AuthorController {
   @ApiResponse({
     status: 200,
     description: 'Created author data',
+    schema: {
+      example: {
+        name: 'abhijith kk',
+        biography: 'this is an example biography',
+        birthdate: '2024-02-11T00:00:00.000Z',
+        _id: '667103a109f4f9f44a59e61f',
+        __v: 0,
+      },
+    },
   })
   @ApiResponse({
     status: 400,
     description: 'Bad request, and error response message',
+    schema: {
+      example: {
+        message: ['biography must be a string'],
+        error: 'Bad Request',
+        statusCode: 400,
+      },
+    },
   })
   @ApiBody({
     schema: {
@@ -104,10 +120,37 @@ export class AuthorController {
   @ApiResponse({
     status: 200,
     description: 'Update author data',
+    schema: {
+      example: {
+        acknowledged: true,
+        modifiedCount: 0,
+        upsertedId: null,
+        upsertedCount: 0,
+        matchedCount: 1,
+      },
+    },
+  })
+  @ApiResponse({
+    status: 400,
+    description: 'Bad request, and error response message',
+    schema: {
+      example: {
+        message: ['Id must be exactly 24 characters long'],
+        error: 'Bad Request',
+        statusCode: 400,
+      },
+    },
   })
   @ApiResponse({
     status: 404,
     description: 'Author not found',
+    schema: {
+      example: {
+        message: 'Author not found',
+        error: 'Not Found',
+        statusCode: 404,
+      },
+    },
   })
   async updateAuthor(@Body() updateAuthor: UpdateAuthorDto): Promise<any> {
     return await this.authorService.updateAuthor(updateAuthor);
@@ -129,10 +172,24 @@ export class AuthorController {
   @ApiResponse({
     status: 404,
     description: 'Author not found',
+    schema: {
+      example: {
+        message: 'Author not found',
+        error: 'Not Found',
+        statusCode: 404,
+      },
+    },
   })
   @ApiResponse({
     status: 403,
-    description: 'Forbidden response, unable to delete if author exist',
+    description: 'Forbidden action',
+    schema: {
+      example: {
+        message: 'The author contains books, this action is forbidden',
+        error: 'Forbidden',
+        statusCode: 403,
+      },
+    },
   })
   async deleteAuthor(@Param() params: DeleteAuthorDto) {
     const { id } = params;

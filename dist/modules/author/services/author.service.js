@@ -49,7 +49,7 @@ let AuthorService = class AuthorService {
         const findAuthorBookExist = await this.bookModel.find({
             authorId: id,
         });
-        if (findAuthorBookExist || findAuthorBookExist.length > 0) {
+        if (findAuthorBookExist && findAuthorBookExist.length > 0) {
             throw new common_1.ForbiddenException('The author contains books, this action is forbidden');
         }
         const authorDeleted = await this.authorModel
