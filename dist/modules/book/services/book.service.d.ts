@@ -24,7 +24,7 @@
 /// <reference types="mongoose/types/inferschematype" />
 /// <reference types="mongoose/types/inferrawdoctype" />
 import { NotFoundException } from '@nestjs/common';
-import { Book } from '../interfaces/book.interface';
+import { Book, allBookResponse } from '../interfaces/book.interface';
 import { UpdateBookDto } from '../dtos/update-book-request.dto';
 import { CreateBookDto } from '../dtos/create-book-request.dto';
 import { Model } from 'mongoose';
@@ -34,10 +34,7 @@ export declare class BookService {
     createBook(createBook: CreateBookDto): Promise<Book>;
     updateBook(updateBook: UpdateBookDto): Promise<any>;
     deleteBook(id: string): Promise<import("mongodb").DeleteResult | NotFoundException>;
-    getAllBooks(pgNo?: number): Promise<{
-        allBooks: Book[];
-        total: number;
-    }>;
+    getAllBooks(pgNo?: number): Promise<allBookResponse>;
     getBookById(id: string): Promise<Book[] | []>;
     getBookDetails(id: string): Promise<Book[]>;
 }

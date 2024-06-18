@@ -1,4 +1,4 @@
-import { Book } from '../interfaces/book.interface';
+import { Book, allBookResponse } from '../interfaces/book.interface';
 import { CreateBookDto } from '../dtos/create-book-request.dto';
 import { BookDetailsDto } from '../dtos/book-details-request.dto';
 import { DeleteBookDto } from '../dtos/delete-book-request.dto';
@@ -11,9 +11,6 @@ export declare class BookController {
     createBook(createBook: CreateBookDto): Promise<Book>;
     updateBook(updateBook: UpdateBookDto): Promise<any>;
     deleteBook(params: DeleteBookDto): Promise<import("mongodb").DeleteResult | import("@nestjs/common").NotFoundException>;
-    getAllBooks(query: paginatorDto): Promise<{
-        allBooks: Book[];
-        total: number;
-    }>;
+    getAllBooks(query: paginatorDto): Promise<allBookResponse>;
     getBookById(params: BookDetailsDto): Promise<{}>;
 }

@@ -12,3 +12,7 @@ export interface AuthorData {
     biography: string;
     birthdate: Date;
 }
+export interface allBookResponse {
+    allBooks: Book[];
+    total: number;
+}

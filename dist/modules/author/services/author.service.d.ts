@@ -24,7 +24,7 @@
 /// <reference types="mongoose/types/inferschematype" />
 /// <reference types="mongoose/types/inferrawdoctype" />
 import { Model } from 'mongoose';
-import { Author, Authorlist } from '../interfaces/author.interface';
+import { Author, Authorlist, allAuthorResponse } from '../interfaces/author.interface';
 import { CreateAuthorDto } from '../dtos/create-author-request.dto';
 import { UpdateAuthorDto } from '../dtos/update-author-request.dto';
 import { Book } from 'src/modules/book/interfaces/book.interface';
@@ -35,10 +35,7 @@ export declare class AuthorService {
     createAuthor(createAuthor: CreateAuthorDto): Promise<Author>;
     updateAuthor(updateAuthor: UpdateAuthorDto): Promise<any>;
     deleteAuthor(id: string): Promise<import("mongodb").DeleteResult>;
-    getAllAuthors(pgNo?: number): Promise<{
-        author: Author[];
-        total: number;
-    }>;
+    getAllAuthors(pgNo?: number): Promise<allAuthorResponse>;
     getAuthorById(id: string): Promise<Author[] | []>;
     getAllAuthorList(): Promise<Authorlist[]>;
 }

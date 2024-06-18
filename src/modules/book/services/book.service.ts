@@ -4,7 +4,7 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { Book } from '../interfaces/book.interface';
+import { Book, allBookResponse } from '../interfaces/book.interface';
 import { UpdateBookDto } from '../dtos/update-book-request.dto';
 import { CreateBookDto } from '../dtos/create-book-request.dto';
 import { Model, Types } from 'mongoose';
@@ -74,7 +74,7 @@ export class BookService {
   }
 
   //all Books
-  async getAllBooks(pgNo = 0): Promise<{ allBooks: Book[]; total: number }> {
+  async getAllBooks(pgNo = 0): Promise<allBookResponse> {
     const limit = 12;
     const pages = limit * pgNo;
     const total = await this.bookModel.countDocuments().exec();

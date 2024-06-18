@@ -1,6 +1,9 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { Model, Types } from 'mongoose';
-import { Book } from 'src/modules/book/interfaces/book.interface';
+import {
+  Book,
+  allBookResponse,
+} from 'src/modules/book/interfaces/book.interface';
 import { publishedDate, searchCriteria } from '../interfaces/search.interface';
 
 @Injectable()
@@ -12,29 +15,26 @@ export class FilterService {
 
   //filtering
   //function overloading for having diffent parameters
-  async searchBook(word: string): Promise<{ allBooks: Book[]; total: number }>;
-  async searchBook(
-    word: string,
-    authorId: string,
-  ): Promise<{ allBooks: Book[]; total: number }>;
+  async searchBook(word: string): Promise<allBookResponse>;
+  async searchBook(word: string, authorId: string): Promise<allBookResponse>;
   async searchBook(
     word: string,
     authorId: string,
     publishedDate: publishedDate,
-  ): Promise<{ allBooks: Book[]; total: number }>;
+  ): Promise<allBookResponse>;
   async searchBook(
     word: string,
     authorId: string,
     publishedDate: publishedDate,
     pgNo: number,
-  ): Promise<{ allBooks: Book[]; total: number }>;
+  ): Promise<allBookResponse>;
 
   async searchBook(
     word?: string,
     authorId?: string,
     publishedDate?: publishedDate,
     pgNo = 0,
-  ): Promise<{ allBooks: Book[]; total: number }> {
+  ): Promise<allBookResponse> {
     const count = 12;
     const searchCriteria: searchCriteria = {};
 

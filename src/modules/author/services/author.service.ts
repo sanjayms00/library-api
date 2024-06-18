@@ -5,7 +5,11 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { Model } from 'mongoose';
-import { Author, Authorlist } from '../interfaces/author.interface';
+import {
+  Author,
+  Authorlist,
+  allAuthorResponse,
+} from '../interfaces/author.interface';
 import { CreateAuthorDto } from '../dtos/create-author-request.dto';
 import { UpdateAuthorDto } from '../dtos/update-author-request.dto';
 import { Book } from 'src/modules/book/interfaces/book.interface';
@@ -79,7 +83,7 @@ export class AuthorService {
   }
 
   //all authors
-  async getAllAuthors(pgNo = 0): Promise<{ author: Author[]; total: number }> {
+  async getAllAuthors(pgNo = 0): Promise<allAuthorResponse> {
     const limit = 12;
     const pages = limit * pgNo;
 

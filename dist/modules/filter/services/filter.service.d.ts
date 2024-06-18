@@ -24,25 +24,13 @@
 /// <reference types="mongoose/types/inferschematype" />
 /// <reference types="mongoose/types/inferrawdoctype" />
 import { Model } from 'mongoose';
-import { Book } from 'src/modules/book/interfaces/book.interface';
+import { Book, allBookResponse } from 'src/modules/book/interfaces/book.interface';
 import { publishedDate } from '../interfaces/search.interface';
 export declare class FilterService {
     private bookModel;
     constructor(bookModel: Model<Book>);
-    searchBook(word: string): Promise<{
-        allBooks: Book[];
-        total: number;
-    }>;
-    searchBook(word: string, authorId: string): Promise<{
-        allBooks: Book[];
-        total: number;
-    }>;
-    searchBook(word: string, authorId: string, publishedDate: publishedDate): Promise<{
-        allBooks: Book[];
-        total: number;
-    }>;
-    searchBook(word: string, authorId: string, publishedDate: publishedDate, pgNo: number): Promise<{
-        allBooks: Book[];
-        total: number;
-    }>;
+    searchBook(word: string): Promise<allBookResponse>;
+    searchBook(word: string, authorId: string): Promise<allBookResponse>;
+    searchBook(word: string, authorId: string, publishedDate: publishedDate): Promise<allBookResponse>;
+    searchBook(word: string, authorId: string, publishedDate: publishedDate, pgNo: number): Promise<allBookResponse>;
 }

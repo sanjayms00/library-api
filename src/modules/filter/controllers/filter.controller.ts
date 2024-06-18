@@ -2,7 +2,10 @@ import { Controller, Get, Query } from '@nestjs/common';
 import { FilterService } from '../services/filter.service';
 import { FilerSearchDto } from '../dtos/filter-search-request.dto';
 import { publishedDate } from '../interfaces/search.interface';
-import { Book } from 'src/modules/book/interfaces/book.interface';
+import {
+  Book,
+  allBookResponse,
+} from 'src/modules/book/interfaces/book.interface';
 import { ApiOperation, ApiQuery, ApiResponse } from '@nestjs/swagger';
 
 @Controller('filter')
@@ -49,7 +52,7 @@ export class FilterController {
   })
   async searchBook(
     @Query() filterSearchDto: FilerSearchDto,
-  ): Promise<{ allBooks: Book[]; total: number }> {
+  ): Promise<allBookResponse> {
     const { word, authorId, startDate, endDate, pgNo } = filterSearchDto;
 
     let pageNo = 0;
