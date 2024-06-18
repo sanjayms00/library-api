@@ -20,8 +20,11 @@ let BookService = class BookService {
         this.bookModel = bookModel;
     }
     async createBook(createBook) {
-        const createdBook = await new this.bookModel(createBook);
-        return createdBook.save();
+        const createdBook = await new this.bookModel(createBook).save();
+        if (!createdBook) {
+            throw new common_1.BadRequestException('Unable to create the book');
+        }
+        return createdBook;
     }
     async updateBook(updateBook) {
         const { _id, authorId, description, title } = updateBook;
@@ -38,6 +41,9 @@ let BookService = class BookService {
                 authorId,
             },
         });
+        if (!updatedBook) {
+            throw new common_1.BadRequestException('Unable to update the book');
+        }
         return updatedBook;
     }
     async deleteBook(id) {

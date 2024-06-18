@@ -76,6 +76,9 @@ let AuthorService = class AuthorService {
             _id: id,
         })
             .exec();
+        if (authorDetails.length <= 0) {
+            throw new common_1.NotFoundException('Author not found');
+        }
         return authorDetails;
     }
     getAllAuthorList() {

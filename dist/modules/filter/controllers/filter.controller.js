@@ -16,6 +16,7 @@ exports.FilterController = void 0;
 const common_1 = require("@nestjs/common");
 const filter_service_1 = require("../services/filter.service");
 const filter_search_request_dto_1 = require("../dtos/filter-search-request.dto");
+const swagger_1 = require("@nestjs/swagger");
 let FilterController = class FilterController {
     constructor(filterService) {
         this.filterService = filterService;
@@ -37,6 +38,42 @@ let FilterController = class FilterController {
 exports.FilterController = FilterController;
 __decorate([
     (0, common_1.Get)(),
+    (0, swagger_1.ApiOperation)({ summary: 'Get all Book list with filtering and pagination' }),
+    (0, swagger_1.ApiQuery)({
+        name: 'authorId',
+        required: false,
+        description: 'Filter by author ID',
+    }),
+    (0, swagger_1.ApiQuery)({
+        name: 'startDate',
+        required: false,
+        description: 'Filter by start date',
+        type: 'string',
+        example: '2024-02-02T00:00:00.000Z',
+    }),
+    (0, swagger_1.ApiQuery)({
+        name: 'endDate',
+        required: false,
+        description: 'Filter by end date',
+        type: 'string',
+        example: '2024-02-05T00:00:00.000Z',
+    }),
+    (0, swagger_1.ApiQuery)({
+        name: 'pgNo',
+        required: false,
+        description: 'Page number',
+        type: 'string',
+    }),
+    (0, swagger_1.ApiQuery)({
+        name: 'word',
+        required: false,
+        description: 'Search with word',
+        type: 'string',
+    }),
+    (0, swagger_1.ApiResponse)({
+        status: 200,
+        description: 'List of book with pagination',
+    }),
     __param(0, (0, common_1.Query)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [filter_search_request_dto_1.FilerSearchDto]),

@@ -1,4 +1,9 @@
-import { Inject, Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Inject,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { Book } from '../interfaces/book.interface';
 import { UpdateBookDto } from '../dtos/update-book-request.dto';
 import { CreateBookDto } from '../dtos/create-book-request.dto';
@@ -13,8 +18,13 @@ export class BookService {
 
   //create Book
   async createBook(createBook: CreateBookDto): Promise<Book> {
-    const createdBook = await new this.bookModel(createBook);
-    return createdBook.save();
+    const createdBook = await new this.bookModel(createBook).save();
+
+    if (!createdBook) {
+      throw new BadRequestException('Unable to create the book');
+    }
+
+    return createdBook;
   }
 
   //update Book
@@ -39,6 +49,10 @@ export class BookService {
         },
       },
     );
+
+    if (!updatedBook) {
+      throw new BadRequestException('Unable to update the book');
+    }
 
     return updatedBook;
   }

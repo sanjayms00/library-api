@@ -104,6 +104,9 @@ export class AuthorService {
       })
       .exec();
 
+    if (authorDetails.length <= 0) {
+      throw new NotFoundException('Author not found');
+    }
     return authorDetails;
   }
 

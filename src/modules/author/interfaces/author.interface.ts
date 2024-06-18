@@ -12,3 +12,8 @@ export interface Authorlist {
   readonly _id: string;
   readonly name: string;
 }
+
+export interface allAuthorResponse {
+  author: Author[];
+  total: number;
+}
